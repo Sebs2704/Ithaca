@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Una declaracion romantica inspirada en el viaje de Odiseo hacia Penelope."
+    />
+    <title>Hasta Ítaca</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="src/styles/base.css" />
+    <link rel="stylesheet" href="src/styles/layout.css" />
+    <link rel="stylesheet" href="src/styles/components.css" />
+    <link rel="stylesheet" href="src/styles/animations.css" />
+  </head>
+  <body>
+    <div class="scroll-meter" aria-hidden="true">
+      <span id="scrollProgress"></span>
+    </div>
+
+    <header class="hero" id="inicio">
+      <nav class="topbar" aria-label="Navegacion principal">
+        <a class="brand" href="#inicio">Hasta Ítaca</a>
+        <div class="nav-links">
+          <a href="#juramento">Juramento</a>
+          <a href="#travesia">Travesía</a>
+          <a href="#declaracion">Declaración</a>
+        </div>
+      </nav>
+
+      <div class="hero__content reveal">
+        <p class="eyebrow">Una odisea para volver a ti</p>
+        <h1>Ni dioses, ni mares, ni monstruos: siempre Penélope.</h1>
+        <p class="hero__copy">
+          Odiseo no solo vuelve a Ítaca: vuelve al nombre que sostuvo su mundo.
+          Esta página transforma ese viaje en una promesa sencilla: elegirte,
+          incluso cuando el camino parezca escrito por tormentas.
+        </p>
+        <div class="hero__actions">
+          <a class="button button--primary" href="#travesia">Seguir la ruta</a>
+          <button class="button button--ghost" id="pulseButton" type="button">
+            Encender juramento
+          </button>
+        </div>
+      </div>
+      <a class="hero__cue" href="#juramento" aria-label="Bajar al juramento"></a>
+    </header>
+
+    <main>
+      <section class="oath section-band" id="juramento">
+        <div class="section-shell oath__grid">
+          <div class="oath__copy reveal">
+            <p class="eyebrow">El centro de la historia</p>
+            <h2>El regreso no era un destino. Era una persona.</h2>
+            <p>
+              La Odisea narra un nostos: el retorno al hogar. Pero, al mirar el
+              camino desde el amor, Ítaca tiene rostro, memoria y paciencia.
+              Penélope espera, resiste, duda con inteligencia y reconoce a
+              Odiseo por aquello que nadie más podía saber.
+            </p>
+          </div>
+          <div class="oath__seal reveal" aria-label="Juramento romantico">
+            <span>20 años</span>
+            <strong>una sola promesa</strong>
+            <p>Que todo camino termine donde tu corazón diga casa.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="saga-section" id="travesia">
+        <div class="section-shell">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Ruta de sagas</p>
+            <h2>De Troya a Ítaca, álbum por álbum</h2>
+          </div>
+
+          <div class="saga-nav reveal" id="sagaNav" aria-label="Navegar sagas"></div>
+          <div class="saga-route" id="sagaRoute"></div>
+        </div>
+      </section>
+
+      <section class="finale-section" id="declaracion">
+        <div class="section-shell finale reveal">
+          <div class="finale__intro">
+            <p class="eyebrow">La canción que no va en la lista</p>
+            <h2>Would You Fall in Love with Me Again</h2>
+            <p>
+              Hay regresos que no se celebran primero: se confiesan. Esta escena
+              queda como una pausa distinta, una disculpa sin ruido y una forma
+              de volver a decir lo que sobrevivió al orgullo, al miedo y a la
+              distancia.
+            </p>
+          </div>
+
+          <div class="finale__grid">
+            <figure class="finale-video" aria-label="Video especial de Would You Fall in Love with Me Again">
+              <video
+                controls
+                playsinline
+                preload="metadata"
+                poster="assets/images/sagas/ithaca.png"
+              >
+                <source src="assets/video/would-you-fall-in-love-with-me-again.mp4" type="video/mp4" />
+                Tu navegador no puede reproducir este video.
+              </video>
+              <div class="finale-video__note">
+                <p>
+                  Hice esto porque necesitaba ordenar lo que no supe decir bien:
+                  entiendo que mis acciones te hicieron sentir invadida, cansada
+                  y decepcionada. Entiendo que no basta con decir “yo no quería
+                  que se sintiera así”, porque al final sí se sintió así, y eso
+                  importa.
+                </p>
+                <p>
+                  Perdón por las veces en las que, por desesperación, terminé
+                  cruzando límites que debí respetar. Perdón por intentar
+                  explicar antes de escuchar. Perdón por hacerte sentir que tu
+                  dolor tenía que convencerme para que yo lo entendiera.
+                </p>
+                <p>
+                  No quiero prometerte perfección. Quiero prometerte algo más
+                  real: que voy a cuidar mis actos, mis límites y la forma en la
+                  que amo.
+                </p>
+              </div>
+            </figure>
+
+            <article class="finale-letter">
+              <p class="eyebrow">Para decirlo sin esconderme</p>
+              <blockquote>
+                No llego perfecto.
+                Llego consciente.
+                Y si algo merece llamarse amor, no es insistir hasta ser escuchado, sino aprender a escuchar incluso cuando duele.
+                Hoy no vengo a defender mi versión.
+                Vengo a reconocer que hubo momentos en los que mi miedo pesó más que tu paz, y eso estuvo mal.
+                Lo siento.
+                No por perderte cerca, sino por haberte hecho sentir que tenías que alejarte para estar tranquila.
+              </blockquote>
+              <p>
+                Esta parte queda para tus palabras: la disculpa que no se
+                defiende, la promesa que no exagera, y la certeza de que volver
+                a amar también puede ser aprender a hacerlo con más verdad.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <p>
+        Inspirado en EPIC: The Musical, de Jorge Rivera-Herrans, y hecho con todo el amor que cabe en estas palabras..
+        Welcome to Seb's
+      </p>
+    </footer>
+
+    <script type="module" src="src/scripts/main.js"></script>
+  </body>
+</html>
