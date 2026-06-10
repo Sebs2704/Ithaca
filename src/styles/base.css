@@ -21,10 +21,12 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at 18% 18%, rgba(143, 36, 61, 0.22), transparent 28rem),
     linear-gradient(135deg, var(--night), var(--sea-deep) 48%, #160d12);
@@ -83,4 +85,29 @@ h3 {
 
 ::selection {
   background: rgba(243, 197, 103, 0.34);
+}
+
+@media (max-width: 640px) {
+  h1 {
+    max-width: 10.5ch;
+    font-size: 2.75rem;
+  }
+
+  h2 {
+    font-size: 2.15rem;
+  }
+
+  h3 {
+    font-size: 1.55rem;
+  }
+}
+
+@media (max-width: 380px) {
+  h1 {
+    font-size: 2.35rem;
+  }
+
+  h2 {
+    font-size: 1.85rem;
+  }
 }

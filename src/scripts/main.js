@@ -4,8 +4,14 @@ import { renderSagaNav, renderSagaRoute, setActiveSaga } from "./components/saga
 
 const sagaNav = document.querySelector("#sagaNav");
 const sagaRoute = document.querySelector("#sagaRoute");
+const sagaViewport = document.querySelector("#sagaViewport");
+const prevSaga = document.querySelector("#prevSaga");
+const nextSaga = document.querySelector("#nextSaga");
+const sagaCounter = document.querySelector("#sagaCounter");
 const scrollProgress = document.querySelector("#scrollProgress");
 const pulseButton = document.querySelector("#pulseButton");
+
+let activeSagaIndex = 0;
 
 function bindRevealOnScroll() {
   const observer = new IntersectionObserver(
@@ -23,24 +29,56 @@ function bindRevealOnScroll() {
   document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
 }
 
-function bindActiveSaga() {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+function updateSagaCarousel(index) {
+  activeSagaIndex = (index + sagas.length) % sagas.length;
+  const activeSaga = sagas[activeSagaIndex];
 
-      if (visible) {
-        setActiveSaga(sagaNav, visible.target.dataset.sagaId);
-      }
+  sagaRoute.style.setProperty("--active-index", activeSagaIndex);
+  sagaCounter.textContent = `${activeSaga.order} / ${String(sagas.length).padStart(2, "0")}`;
+  setActiveSaga(sagaNav, activeSaga.id);
+
+  document.querySelectorAll(".saga-card").forEach((card, cardIndex) => {
+    const isActive = cardIndex === activeSagaIndex;
+    card.classList.toggle("is-active", isActive);
+    card.setAttribute("aria-hidden", String(!isActive));
+    card.inert = !isActive;
+  });
+}
+
+function bindSagaCarousel() {
+  prevSaga.addEventListener("click", () => updateSagaCarousel(activeSagaIndex - 1));
+  nextSaga.addEventListener("click", () => updateSagaCarousel(activeSagaIndex + 1));
+
+  sagaViewport.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") updateSagaCarousel(activeSagaIndex - 1);
+    if (event.key === "ArrowRight") updateSagaCarousel(activeSagaIndex + 1);
+  });
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  sagaViewport.addEventListener(
+    "touchstart",
+    (event) => {
+      const touch = event.changedTouches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
     },
-    {
-      rootMargin: "-20% 0px -55% 0px",
-      threshold: [0.18, 0.35, 0.55],
-    },
+    { passive: true },
   );
 
-  document.querySelectorAll(".saga-card").forEach((card) => observer.observe(card));
+  sagaViewport.addEventListener(
+    "touchend",
+    (event) => {
+      const touch = event.changedTouches[0];
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+
+      if (Math.abs(deltaX) < 48 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+      updateSagaCarousel(activeSagaIndex + (deltaX < 0 ? 1 : -1));
+    },
+    { passive: true },
+  );
 }
 
 function bindScrollProgress() {
@@ -64,11 +102,11 @@ function bindMoments() {
   });
 }
 
-renderSagaNav(sagas, sagaNav);
+renderSagaNav(sagas, sagaNav, updateSagaCarousel);
 renderSagaRoute(sagas, sagaRoute);
-setActiveSaga(sagaNav, sagas[0].id);
+updateSagaCarousel(0);
 bindSongPreviews(sagaRoute);
 bindRevealOnScroll();
-bindActiveSaga();
+bindSagaCarousel();
 bindScrollProgress();
 bindMoments();

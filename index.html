@@ -81,7 +81,31 @@
           </div>
 
           <div class="saga-nav reveal" id="sagaNav" aria-label="Navegar sagas"></div>
-          <div class="saga-route" id="sagaRoute"></div>
+          <div class="saga-carousel reveal" aria-label="Carrusel de sagas">
+            <button
+              class="saga-carousel__control saga-carousel__control--prev"
+              id="prevSaga"
+              type="button"
+              aria-label="Ver saga anterior"
+            >
+              ‹
+            </button>
+            <div class="saga-carousel__viewport" id="sagaViewport" tabindex="0">
+              <div class="saga-route" id="sagaRoute"></div>
+            </div>
+            <button
+              class="saga-carousel__control saga-carousel__control--next"
+              id="nextSaga"
+              type="button"
+              aria-label="Ver saga siguiente"
+            >
+              ›
+            </button>
+            <div class="saga-carousel__status" aria-live="polite">
+              <span id="sagaCounter">01 / 09</span>
+              <small>Desliza o usa las flechas para recorrer la ruta</small>
+            </div>
+          </div>
         </div>
       </section>
 

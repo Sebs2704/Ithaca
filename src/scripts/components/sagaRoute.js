@@ -30,11 +30,11 @@ function songRows(saga) {
     .join("");
 }
 
-export function renderSagaNav(sagas, navElement) {
+export function renderSagaNav(sagas, navElement, onSelect) {
   navElement.innerHTML = sagas
     .map(
-      (saga) => `
-        <button class="saga-chip" type="button" data-saga-target="${saga.id}" aria-pressed="false">
+      (saga, index) => `
+        <button class="saga-chip" type="button" data-saga-index="${index}" data-saga-target="${saga.id}" aria-pressed="false">
           <span>${saga.order}</span>
           ${saga.title.replace("The ", "")}
         </button>
@@ -46,10 +46,7 @@ export function renderSagaNav(sagas, navElement) {
     const chip = event.target.closest("[data-saga-target]");
     if (!chip) return;
 
-    document.querySelector(`#saga-${chip.dataset.sagaTarget}`)?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    onSelect(Number(chip.dataset.sagaIndex));
   });
 }
 
@@ -57,7 +54,7 @@ export function renderSagaRoute(sagas, routeElement) {
   routeElement.innerHTML = sagas
     .map(
       (saga) => `
-        <article class="saga-card reveal" id="saga-${saga.id}" data-saga-id="${saga.id}" style="--saga-color: ${saga.color}">
+        <article class="saga-card" id="saga-${saga.id}" data-saga-id="${saga.id}" style="--saga-color: ${saga.color}">
           <div class="saga-card__media">
             <img src="${saga.image}" alt="Escena ilustrada de ${saga.title}" loading="lazy" />
             <span class="saga-card__number">${saga.order}</span>
