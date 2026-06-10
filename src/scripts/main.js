@@ -29,54 +29,61 @@ function bindRevealOnScroll() {
   document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
 }
 
-function updateSagaCarousel(index) {
+function setActiveSagaIndex(index) {
   activeSagaIndex = (index + sagas.length) % sagas.length;
   const activeSaga = sagas[activeSagaIndex];
 
-  sagaRoute.style.setProperty("--active-index", activeSagaIndex);
   sagaCounter.textContent = `${activeSaga.order} / ${String(sagas.length).padStart(2, "0")}`;
   setActiveSaga(sagaNav, activeSaga.id);
 
   document.querySelectorAll(".saga-card").forEach((card, cardIndex) => {
     const isActive = cardIndex === activeSagaIndex;
     card.classList.toggle("is-active", isActive);
-    card.setAttribute("aria-hidden", String(!isActive));
-    card.inert = !isActive;
   });
 }
 
-function bindSagaCarousel() {
-  prevSaga.addEventListener("click", () => updateSagaCarousel(activeSagaIndex - 1));
-  nextSaga.addEventListener("click", () => updateSagaCarousel(activeSagaIndex + 1));
+function scrollToSaga(index) {
+  const nextIndex = (index + sagas.length) % sagas.length;
+  const nextCard = sagaRoute.querySelectorAll(".saga-card")[nextIndex];
 
-  sagaViewport.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowLeft") updateSagaCarousel(activeSagaIndex - 1);
-    if (event.key === "ArrowRight") updateSagaCarousel(activeSagaIndex + 1);
+  nextCard?.scrollIntoView({
+    behavior: "smooth",
+    block: "nearest",
+    inline: "start",
   });
 
-  let touchStartX = 0;
-  let touchStartY = 0;
+  setActiveSagaIndex(nextIndex);
+}
 
-  sagaViewport.addEventListener(
-    "touchstart",
-    (event) => {
-      const touch = event.changedTouches[0];
-      touchStartX = touch.clientX;
-      touchStartY = touch.clientY;
-    },
-    { passive: true },
-  );
+function updateActiveSagaFromScroll() {
+  const cards = [...sagaRoute.querySelectorAll(".saga-card")];
+  const viewportLeft = sagaViewport.getBoundingClientRect().left;
 
+  const nearestIndex = cards
+    .map((card, index) => ({
+      index,
+      distance: Math.abs(card.getBoundingClientRect().left - viewportLeft),
+    }))
+    .sort((a, b) => a.distance - b.distance)[0]?.index;
+
+  if (Number.isInteger(nearestIndex) && nearestIndex !== activeSagaIndex) {
+    setActiveSagaIndex(nearestIndex);
+  }
+}
+
+function bindSagaCarousel() {
+  prevSaga.addEventListener("click", () => scrollToSaga(activeSagaIndex - 1));
+  nextSaga.addEventListener("click", () => scrollToSaga(activeSagaIndex + 1));
+
+  sagaViewport.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") scrollToSaga(activeSagaIndex - 1);
+    if (event.key === "ArrowRight") scrollToSaga(activeSagaIndex + 1);
+  });
+
+  sagaViewport.addEventListener("scroll", updateActiveSagaFromScroll, { passive: true });
   sagaViewport.addEventListener(
     "touchend",
-    (event) => {
-      const touch = event.changedTouches[0];
-      const deltaX = touch.clientX - touchStartX;
-      const deltaY = touch.clientY - touchStartY;
-
-      if (Math.abs(deltaX) < 48 || Math.abs(deltaX) < Math.abs(deltaY)) return;
-      updateSagaCarousel(activeSagaIndex + (deltaX < 0 ? 1 : -1));
-    },
+    () => window.setTimeout(updateActiveSagaFromScroll, 160),
     { passive: true },
   );
 }
@@ -102,9 +109,9 @@ function bindMoments() {
   });
 }
 
-renderSagaNav(sagas, sagaNav, updateSagaCarousel);
+renderSagaNav(sagas, sagaNav, scrollToSaga);
 renderSagaRoute(sagas, sagaRoute);
-updateSagaCarousel(0);
+setActiveSagaIndex(0);
 bindSongPreviews(sagaRoute);
 bindRevealOnScroll();
 bindSagaCarousel();
